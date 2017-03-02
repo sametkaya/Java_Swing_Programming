@@ -140,12 +140,12 @@ public class HastaApp extends javax.swing.JFrame {
 
         Hasta.Hastalar.add(yenihasta);
 
-        dtm.setRowCount(0);
-        for (Hasta hasta : Hasta.Hastalar) {
-            dtm.addRow(new Object[]{hasta.Id, hasta.Adi, hasta.Soyadi, hasta.Doktor});
-        }
+//        dtm.setRowCount(0);
+//        for (Hasta hasta : Hasta.Hastalar) {
+//            dtm.addRow(new Object[]{hasta.Id, hasta.Adi, hasta.Soyadi, hasta.Doktor});
+//        }
         Listele();
-        Reset();
+       Reset();
 
     }//GEN-LAST:event_btn_ekleActionPerformed
 
@@ -155,6 +155,8 @@ public class HastaApp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Bir Hasta Seçmelisiniz");
             return;
         }
+        
+        
         Hasta.Hastalar.remove(tbl_liste.getSelectedRow());
 
         Listele();
