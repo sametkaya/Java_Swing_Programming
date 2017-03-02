@@ -175,15 +175,13 @@ public class HastaApp extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btn_sorgulaActionPerformed
-
+     Hasta degisecekHasta;
     private void btn_degistirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_degistirActionPerformed
         // TODO add your handling code here:
          if (tbl_liste.getSelectedRow() < 0) {
             JOptionPane.showMessageDialog(rootPane, "Bir Hasta Seçmelisiniz");
             return;
         }
-         
-         
         degisecekHasta.Id = txt_hastaId.getText();
         degisecekHasta.Adi = txt_hastaName.getText();
         degisecekHasta.Soyadi = txt_hastaSoyad.getText();
@@ -197,7 +195,7 @@ public class HastaApp extends javax.swing.JFrame {
         // TODO add your handling code here:
      
     }//GEN-LAST:event_tbl_listeInputMethodTextChanged
-     Hasta degisecekHasta;
+
     private void tbl_listeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_listeMouseClicked
         // TODO add your handling code here:
            if (tbl_liste.getSelectedRow() < 0) {
