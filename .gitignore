@@ -10,3 +10,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/Swing_Friday_Coding/Swing_Working/nbproject/private/
+/Swing_Friday_Coding/Swing_Working/build/
+/Swing_Friday_Coding/BPII_LAb04/nbproject/private/
+/Swing_Friday_Coding/BPII_LAb04/build/
+/Swing_Friday_Coding/SosyalMedyaApp/nbproject/private/
+/Swing_Friday_Coding/SosyalMedyaApp/build/
