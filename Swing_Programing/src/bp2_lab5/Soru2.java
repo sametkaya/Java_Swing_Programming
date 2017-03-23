@@ -85,7 +85,7 @@ public class Soru2 extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         String txt = txta_text.getText();
-        String iDesen = "\\d{3}"; //1. durum
+        String iDesen = "\\d{3}\\D"; //1. durum
         Pattern pattern = Pattern.compile(iDesen);
         Matcher matcher = pattern.matcher(txt);
         DefaultListModel dlm= new DefaultListModel();

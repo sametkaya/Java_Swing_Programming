@@ -76,7 +76,7 @@ public class Soru3 extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         String txt = txt_sifre.getText();
-        String iDesen = "[A-Z][\\w&&\\S]{6,}\\W"; //1. durum
+        String iDesen = "[A-Z][\\w&&[^A-Z]]{6,}\\W"; //1. durum
         Pattern pattern = Pattern.compile(iDesen);
         Matcher matcher = pattern.matcher(txt);
         if(matcher.find())

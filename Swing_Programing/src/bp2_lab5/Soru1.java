@@ -99,7 +99,7 @@ public class Soru1 extends javax.swing.JFrame {
         String Ad = txt_ad.getText();
         String iDesen = "[^A-z]"; //1. durum
         String iDesen2 = "[\\W\\d]";//2. durum
-        Pattern pattern = Pattern.compile(iDesen2);
+        Pattern pattern = Pattern.compile(iDesen);
         Matcher matcher = pattern.matcher(Ad);
 
         if (matcher.find()) {
@@ -117,11 +117,12 @@ public class Soru1 extends javax.swing.JFrame {
         } else {
             lbl_soyad_hata.setVisible(false);
         }
+        
         String email = txt_mail.getText();
-        iDesen2 = "[\\w]+@((yahoo)|(gmail)).com";//2. durum
+        iDesen2 = "\\A[A-z]\\w+@((yahoo)|(gmail)).com";//2. durum
         pattern = Pattern.compile(iDesen2);
         matcher = pattern.matcher(email);
-        if (matcher.find()) {
+        if (!matcher.find()) {
             lbl_email_hata.setText("Geçerli Bir Email Giriniz");
             lbl_email_hata.setVisible(true);
         } else {
@@ -129,7 +130,7 @@ public class Soru1 extends javax.swing.JFrame {
         }
         
         String telefon = txt_telefon.getText();
-        iDesen2 = "\\d{4}\\-\\d{7}";//2. durum
+        iDesen2 = "\\b\\d{4}\\-\\d{7}\\b";//2. durum
         pattern = Pattern.compile(iDesen2);
         matcher = pattern.matcher(telefon);
         if (!matcher.find()) {
