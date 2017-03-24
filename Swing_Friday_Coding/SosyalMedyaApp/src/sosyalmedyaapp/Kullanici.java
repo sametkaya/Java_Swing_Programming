@@ -20,6 +20,8 @@ public class Kullanici {
     public String Sifre;
     public Date DogumTarihi;
     public String Cinsiyet;
+    public ArrayList<Kullanici> ArkadasListesi = new ArrayList<>();
+    
     
     
 }

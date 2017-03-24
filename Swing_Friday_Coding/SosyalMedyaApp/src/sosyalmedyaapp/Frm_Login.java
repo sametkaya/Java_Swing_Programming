@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author samet
  */
 public class Frm_Login extends javax.swing.JFrame {
-
+    public static Kullanici loginuser;
     /**
      * Creates new form Frm_Login
      */
@@ -103,9 +103,12 @@ public class Frm_Login extends javax.swing.JFrame {
         String kullaniciad = txt_kullaniciAdi.getText();
         String sifre = String.copyValueOf(txtp_sifre.getPassword());
         boolean girisyap = false;
+        Kullanici login=null;
         for (Kullanici kisi : Kullanici.Kullanicilar) {
             if ((kisi.KullaniciAdi.compareTo(kullaniciad) == 0) && (kisi.Sifre.compareTo(sifre) == 0)) {
                 girisyap = true;
+                loginuser=kisi;
+                //login=kisi;
                 break;
             }
         }
@@ -158,14 +161,27 @@ public class Frm_Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Kullanici testk=new Kullanici();
-                testk.Adi="Samet";
-                testk.Soyadi="Kaya";
-                testk.KullaniciAdi="q";
-                testk.Sifre="1";
-                testk.Cinsiyet="Erkek";
-                Kullanici.Kullanicilar.add(testk);
-                
+                Kullanici testk1=new Kullanici();
+                testk1.Adi="Samet";
+                testk1.Soyadi="Kaya";
+                testk1.KullaniciAdi="q";
+                testk1.Sifre="1";
+                testk1.Cinsiyet="Erkek";
+                Kullanici.Kullanicilar.add(testk1);
+                 Kullanici testk2=new Kullanici();
+                testk2.Adi="Samet";
+                testk2.Soyadi="Kaya";
+                testk2.KullaniciAdi="q";
+                testk2.Sifre="1";
+                testk2.Cinsiyet="Erkek";
+                Kullanici.Kullanicilar.add(testk2);
+                        Kullanici testk3=new Kullanici();
+                testk3.Adi="Samet";
+                testk3.Soyadi="Kaya";
+                testk3.KullaniciAdi="q";
+                testk3.Sifre="1";
+                testk3.Cinsiyet="Erkek";
+                Kullanici.Kullanicilar.add(testk3);
                 new Frm_Login().setVisible(true);
             }
         });
