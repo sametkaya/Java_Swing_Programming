@@ -5,6 +5,9 @@
  */
 package sosyalmedyaapp;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author samet
@@ -14,10 +17,18 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
     /**
      * Creates new form Frm_KullaniciSayfasi
      */
+    DefaultTableModel dtm1 = new DefaultTableModel();
+    DefaultTableModel dtm2 = new DefaultTableModel();
+
     public Frm_KullaniciSayfasi() {
         initComponents();
-        
-        this.setTitle(Frm_Login.loginuser.Adi+" "+Frm_Login.loginuser.Soyadi);
+
+        this.setTitle(Frm_Login.loginuser.Adi + " " + Frm_Login.loginuser.Soyadi);
+        dtm1.setColumnIdentifiers(new Object[]{"KULLANICI ADI", "ADI", "SOYADI"});
+        tbl_kisiliste.setModel(dtm1);
+        dtm2.setColumnIdentifiers(new Object[]{"KULLANICI ADI", "ADI", "SOYADI"});
+        tbl_arkadaslistesi.setModel(dtm2);
+
     }
 //    Kullanici loginuser;
 //    public Frm_KullaniciSayfasi( Kullanici loginuser) {
@@ -25,6 +36,7 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
 //        this.loginuser= loginuser;
 //        this.setTitle(this.loginuser.Adi+" "+this.loginuser.Soyadi);
 //    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,6 +47,21 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu3 = new javax.swing.JMenu();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_kisiliste = new javax.swing.JTable();
+        txt_kullaniciadi = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        btn_bul = new javax.swing.JButton();
+        btn_ekle = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_arkadaslistesi = new javax.swing.JTable();
+        rbtn_arkadaslar = new javax.swing.JRadioButton();
+        rbtn_arkadaslilkistek = new javax.swing.JRadioButton();
+        btn_kabulet = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -49,6 +76,109 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tbl_kisiliste.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tbl_kisiliste);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 469, 170));
+
+        txt_kullaniciadi.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txt_kullaniciadiInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        txt_kullaniciadi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_kullaniciadiKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_kullaniciadiKeyTyped(evt);
+            }
+        });
+        jPanel1.add(txt_kullaniciadi, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 100, -1));
+
+        jLabel1.setText("Adı");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+
+        btn_bul.setText("Bul");
+        btn_bul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_bulActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_bul, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
+
+        btn_ekle.setText("Ekle");
+        btn_ekle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ekleActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_ekle, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, -1, -1));
+
+        jTabbedPane1.addTab("Bul", jPanel1);
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tbl_arkadaslistesi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbl_arkadaslistesi);
+
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, 206));
+
+        buttonGroup1.add(rbtn_arkadaslar);
+        rbtn_arkadaslar.setSelected(true);
+        rbtn_arkadaslar.setText("Arkadaşlar");
+        rbtn_arkadaslar.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rbtn_arkadaslarItemStateChanged(evt);
+            }
+        });
+        jPanel2.add(rbtn_arkadaslar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+
+        buttonGroup1.add(rbtn_arkadaslilkistek);
+        rbtn_arkadaslilkistek.setText("Arkadaşlık İstekleri");
+        jPanel2.add(rbtn_arkadaslilkistek, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, -1));
+
+        btn_kabulet.setText("Kabul Et");
+        btn_kabulet.setEnabled(false);
+        btn_kabulet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_kabuletActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_kabulet, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, -1, -1));
+
+        jTabbedPane1.addTab("Arkadaş Listesi", jPanel2);
 
         jMenu1.setText("İŞLEMLER");
 
@@ -71,11 +201,11 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
         );
 
         pack();
@@ -85,18 +215,122 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_Login log = new Frm_Login();
         log.setVisible(true);
-        
+
     }//GEN-LAST:event_formWindowClosing
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        Frm_Login.loginuser=null;
+        Frm_Login.loginuser = null;
         Frm_Login log = new Frm_Login();
-        
+
         log.setVisible(true);
-        
+
         this.dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void txt_kullaniciadiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_kullaniciadiKeyTyped
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_txt_kullaniciadiKeyTyped
+
+    private void txt_kullaniciadiInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_kullaniciadiInputMethodTextChanged
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txt_kullaniciadiInputMethodTextChanged
+
+    private void txt_kullaniciadiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_kullaniciadiKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txt_kullaniciadiKeyReleased
+
+    private void btn_bulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bulActionPerformed
+        // TODO add your handling code here:
+        dtm1.setRowCount(0);
+        String gelen = txt_kullaniciadi.getText();
+        if (txt_kullaniciadi.getText().isEmpty() || txt_kullaniciadi.getText() == null) {
+            return;
+        }
+        for (Kullanici user : Kullanici.Kullanicilar) {
+            if (user.Adi.toLowerCase().startsWith(txt_kullaniciadi.getText().toLowerCase())) {
+                dtm1.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+            }
+        }
+
+    }//GEN-LAST:event_btn_bulActionPerformed
+
+    private void btn_ekleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ekleActionPerformed
+        // TODO add your handling code here:
+        if (tbl_kisiliste.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
+            return;
+        }
+        String kullaniciadi = dtm1.getValueAt(tbl_kisiliste.getSelectedRow(), 0).toString();
+        for (Kullanici user : Kullanici.Kullanicilar) {
+            if (user.KullaniciAdi.compareTo(kullaniciadi) == 0) {
+                user.ArkadaslikIstekleri.add(Frm_Login.loginuser);
+
+                break;
+            }
+        }
+
+
+    }//GEN-LAST:event_btn_ekleActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        // TODO add your handling code here:
+        dtm2.setRowCount(0);
+        for (Kullanici user : Frm_Login.loginuser.ArkadasListesi) {
+
+            dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+
+        }
+
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void rbtn_arkadaslarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtn_arkadaslarItemStateChanged
+        // TODO add your handling code here:
+        dtm2.setRowCount(0);
+        if (rbtn_arkadaslar.isSelected()) {
+               btn_kabulet.setEnabled(false);
+            for (Kullanici user : Frm_Login.loginuser.ArkadasListesi) {
+                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+            }
+        } else {
+            btn_kabulet.setEnabled(true);
+            for (Kullanici user : Frm_Login.loginuser.ArkadaslikIstekleri) {
+                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+            }
+        }
+
+    }//GEN-LAST:event_rbtn_arkadaslarItemStateChanged
+
+    private void btn_kabuletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_kabuletActionPerformed
+        // TODO add your handling code here:
+         if (tbl_arkadaslistesi.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
+            return;
+        }
+        String kullaniciadi = dtm2.getValueAt(tbl_arkadaslistesi.getSelectedRow(), 0).toString();
+        Kullanici gelen=null;
+        for (Kullanici user : Frm_Login.loginuser.ArkadaslikIstekleri) {
+            if (user.KullaniciAdi.compareTo(kullaniciadi) == 0) {
+                Frm_Login.loginuser.ArkadasListesi.add(user);
+                user.ArkadasListesi.add(Frm_Login.loginuser);
+               
+                gelen=user;
+                
+                break;
+            }
+        }
+        
+        if(gelen!=null)
+        {
+        Frm_Login.loginuser.ArkadaslikIstekleri.remove(gelen);
+        }
+        
+        
+    }//GEN-LAST:event_btn_kabuletActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,10 +368,25 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_bul;
+    private javax.swing.JButton btn_ekle;
+    private javax.swing.JButton btn_kabulet;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JRadioButton rbtn_arkadaslar;
+    private javax.swing.JRadioButton rbtn_arkadaslilkistek;
+    private javax.swing.JTable tbl_arkadaslistesi;
+    private javax.swing.JTable tbl_kisiliste;
+    private javax.swing.JTextField txt_kullaniciadi;
     // End of variables declaration//GEN-END:variables
 }

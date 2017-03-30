@@ -21,7 +21,7 @@ public class Kullanici {
     public Date DogumTarihi;
     public String Cinsiyet;
     public ArrayList<Kullanici> ArkadasListesi = new ArrayList<>();
-    
+      public ArrayList<Kullanici> ArkadaslikIstekleri = new ArrayList<>();
     
     
 }
