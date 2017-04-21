@@ -8,7 +8,9 @@ package sosyalmedyaapp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -117,31 +119,52 @@ public class Frm_KayitOl extends javax.swing.JFrame {
             yenikullanici.Sifre = String.valueOf(txtp_sifre.getPassword());
             yenikullanici.Cinsiyet = rdio_erkek.isSelected();
 
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/SOSYALMEDYADB", "sa", "as");
 
-//        if (rdio_erkek.isSelected()) {
-//            yenikullanici.Cinsiyet = true;
-//        } else {
-//            yenikullanici.Cinsiyet = false;
-//        }
-//            boolean kisivar = false;
-//            for (USER kisi : USER.Kullanicilar) {
-//                if (kisi.KullaniciAdi.compareTo(yenikullanici.KullaniciAdi) == 0) {
-//                    kisivar = true;
-//                    break;
-//                }
-//            }
-//
-//            if (kisivar) {
-//                JOptionPane.showMessageDialog(rootPane, "Bu isimde bir kullanıcı bulunmaktadır!");
-//            } else {
-//
-//                USER.Kullanicilar.add(yenikullanici);
-//                JOptionPane.showMessageDialog(rootPane, "Kayıt Başarılı");
-//                Frm_Login log = new Frm_Login();
-//                log.setVisible(true);
-//                this.dispose();
-//            }
-      
+            ///kullanıcı adı varmı
+            String query = "SELECT KULLANICI_ADI FROM TBL_USER WHERE KULLANICI_ADI='" + yenikullanici.KullaniciAdi + "'";
+            Statement stm1 = con.createStatement();
+
+            ResultSet kullanicilar = stm1.executeQuery(query);
+
+            if (kullanicilar.next()) {
+                JOptionPane.showMessageDialog(rootPane, yenikullanici.KullaniciAdi + " kullanıcısı  bulunmaktadır");
+                return;
+            }
+
+            //**********************
+            ///max id bul
+            query = "SELECT MAX(ID) max_id FROM TBL_USER";
+            stm1 = con.createStatement();
+
+            ResultSet idMax = stm1.executeQuery(query);
+            int id2 = 0;
+            if (idMax.next()) {
+                id2 = idMax.getInt("max_id");
+            }
+            id2++;
+
+            //**********************
+            query = "INSERT INTO TBL_USER (ID,KULLANICI_ADI,ADI,SOYADI,SIFRE,CINSIYET) VALUES(?,?,?,?,?,?)";
+
+            PreparedStatement stm = con.prepareStatement(query);
+
+            stm.setInt(1, id2);
+            stm.setString(2, yenikullanici.KullaniciAdi);
+            stm.setString(3, yenikullanici.Adi);
+            stm.setString(4, yenikullanici.Soyadi);
+            stm.setString(5, yenikullanici.Sifre);
+            stm.setBoolean(6, yenikullanici.Cinsiyet);
+
+            stm.executeUpdate();
+            JOptionPane.showMessageDialog(rootPane, "KAYIT BAŞARILI");
+             Frm_Login log = new Frm_Login();
+        log.setVisible(true);
+        this.dispose();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Frm_KayitOl.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 
     }//GEN-LAST:event_btn_kaydetActionPerformed

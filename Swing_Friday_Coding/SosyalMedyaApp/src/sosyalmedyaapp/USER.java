@@ -12,16 +12,16 @@ import java.util.Date;
  *
  * @author samet
  */
-public class Kullanici {
-    public static ArrayList<Kullanici> Kullanicilar= new ArrayList();
+public class USER {
+    public static ArrayList<USER> Kullanicilar= new ArrayList();
+    public int Id;
     public String KullaniciAdi;
     public String Adi;
     public String Soyadi;
     public String Sifre;
-    public Date DogumTarihi;
-    public String Cinsiyet;
-    public ArrayList<Kullanici> ArkadasListesi = new ArrayList<>();
-      public ArrayList<Kullanici> ArkadaslikIstekleri = new ArrayList<>();
+    public boolean Cinsiyet;
+    public ArrayList<USER> ArkadasListesi = new ArrayList<>();
+    public ArrayList<USER> ArkadaslikIstekleri = new ArrayList<>();
     
     
 }
