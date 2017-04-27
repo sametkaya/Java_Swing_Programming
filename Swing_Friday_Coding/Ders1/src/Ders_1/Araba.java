@@ -6,7 +6,7 @@ public class Araba {
 	private String model; // özellik / Attribute
 	private String renk; 
 	private int hiz;
-	private int fiyat;
+	int fiyat;
 	public Araba(String marka, String model,String renk, int hiz){
 		
 		this.marka = marka;
