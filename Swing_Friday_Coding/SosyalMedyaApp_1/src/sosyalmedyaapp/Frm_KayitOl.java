@@ -129,6 +129,7 @@ public class Frm_KayitOl extends javax.swing.JFrame {
 
             if (kullanicilar.next()) {
                 JOptionPane.showMessageDialog(rootPane, yenikullanici.KullaniciAdi + " kullanıcısı  bulunmaktadır");
+              
                 return;
             }
 

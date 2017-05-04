@@ -5,6 +5,10 @@
  */
 package sosyalmedyaapp;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author samet
  */
 public class Frm_Login extends javax.swing.JFrame {
-    public static USER loginuser;
+    public static USER_1 loginuser;
     /**
      * Creates new form Frm_Login
      */
@@ -103,23 +107,31 @@ public class Frm_Login extends javax.swing.JFrame {
         String kullaniciad = txt_kullaniciAdi.getText();
         String sifre = String.copyValueOf(txtp_sifre.getPassword());
         boolean girisyap = false;
-        USER login=null;
-        for (USER kisi : USER.Kullanicilar) {
-            if ((kisi.KullaniciAdi.compareTo(kullaniciad) == 0) && (kisi.Sifre.compareTo(sifre) == 0)) {
-                girisyap = true;
-                loginuser=kisi;
-                //login=kisi;
-                break;
-            }
-        }
-        if (girisyap) {
-            Frm_KullaniciSayfasi newkullanicisayfasi = new Frm_KullaniciSayfasi();
+        USER_1 login=null;
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
+
+        Query q = em.createQuery("SELECT u FROM USER_1 u WHERE u.kullaniciAdi=:kad AND u.sifre=:sif");
+        
+        q.setParameter("kad", kullaniciad);
+        q.setParameter("sif", sifre);
+        
+        login=(USER_1)q.getSingleResult();
+        
+        if(login!=null)
+        {
+           loginuser=login;
+          Frm_KullaniciSayfasi newkullanicisayfasi = new Frm_KullaniciSayfasi();
             newkullanicisayfasi.setVisible(true);
             this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Kullanici Adi ya da Şifre Geçersiz! ");
-            
+        
         }
+        else
+        {
+          JOptionPane.showMessageDialog(rootPane, "Kullanici Adi ya da Şifre Geçersiz! ");
+        }
+  
     }//GEN-LAST:event_btn_girisActionPerformed
 
     private void btn_kayıtOlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_kayıtOlActionPerformed

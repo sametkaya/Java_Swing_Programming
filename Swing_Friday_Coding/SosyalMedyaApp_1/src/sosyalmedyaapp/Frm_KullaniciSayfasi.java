@@ -5,6 +5,11 @@
  */
 package sosyalmedyaapp;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,10 +28,10 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
     public Frm_KullaniciSayfasi() {
         initComponents();
 
-        this.setTitle(Frm_Login.loginuser.Adi + " " + Frm_Login.loginuser.Soyadi);
-        dtm1.setColumnIdentifiers(new Object[]{"KULLANICI ADI", "ADI", "SOYADI"});
+        this.setTitle(Frm_Login.loginuser.getAdi() + " " + Frm_Login.loginuser.getSoyadi());
+        dtm1.setColumnIdentifiers(new Object[]{"ID", "KULLANICI ADI", "ADI", "SOYADI"});
         tbl_kisiliste.setModel(dtm1);
-        dtm2.setColumnIdentifiers(new Object[]{"KULLANICI ADI", "ADI", "SOYADI"});
+        dtm2.setColumnIdentifiers(new Object[]{"ID", "KULLANICI ADI", "ADI", "SOYADI"});
         tbl_arkadaslistesi.setModel(dtm2);
 
     }
@@ -246,15 +251,25 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
 
     private void btn_bulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bulActionPerformed
         // TODO add your handling code here:
-        dtm1.setRowCount(0);
-        String gelen = txt_kullaniciadi.getText();
         if (txt_kullaniciadi.getText().isEmpty() || txt_kullaniciadi.getText() == null) {
             return;
         }
-        for (USER user : USER.Kullanicilar) {
-            if (user.Adi.toLowerCase().startsWith(txt_kullaniciadi.getText().toLowerCase())) {
-                dtm1.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
-            }
+        String ad = txt_kullaniciadi.getText();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
+
+        Query q = em.createQuery("SELECT u FROM USER_1 u WHERE u.adi LIKE '"+ad+"%'");
+
+
+
+        List<USER_1> liste = q.getResultList();
+
+        dtm1.setRowCount(0);
+
+        for (USER_1 user : liste) {
+
+            dtm1.addRow(new Object[]{user.getId(), user.getKullaniciAdi(), user.getAdi(), user.getSoyadi()});
+
         }
 
     }//GEN-LAST:event_btn_bulActionPerformed
@@ -265,71 +280,90 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
             return;
         }
-        String kullaniciadi = dtm1.getValueAt(tbl_kisiliste.getSelectedRow(), 0).toString();
-        for (USER user : USER.Kullanicilar) {
-            if (user.KullaniciAdi.compareTo(kullaniciadi) == 0) {
-                user.ArkadaslikIstekleri.add(Frm_Login.loginuser);
+        int id = (int) dtm1.getValueAt(tbl_kisiliste.getSelectedRow(), 0);
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
 
-                break;
-            }
-        }
+        Query q = em.createQuery("SELECT u FROM USER_1 u WHERE u.id=:id");
+        q.setParameter("id", id);
+        
+
+
+        USER_1 gelen = (USER_1)q.getSingleResult();
+        if(gelen==null)
+        {
+        
+            return;
+        }    
+        
+        ARKADASLIK yeni = new ARKADASLIK();
+        yeni.setId(3);
+        yeni.setIdUserIstek(Frm_Login.loginuser.getId());
+        yeni.setIdUserKabul(gelen.getId());
+       yeni.setKabulDurumu(false);
+        em.getTransaction().begin();
+        em.persist(yeni);
+        em.getTransaction().commit();
+        
+
 
 
     }//GEN-LAST:event_btn_ekleActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
-        dtm2.setRowCount(0);
-        for (USER user : Frm_Login.loginuser.ArkadasListesi) {
-
-            dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
-
-        }
+//        dtm2.setRowCount(0);
+//        for (USER user : Frm_Login.loginuser.ArkadasListesi) {
+//
+//            dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+//
+//        }
 
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void rbtn_arkadaslarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtn_arkadaslarItemStateChanged
         // TODO add your handling code here:
-        dtm2.setRowCount(0);
-        if (rbtn_arkadaslar.isSelected()) {
-               btn_kabulet.setEnabled(false);
-            for (USER user : Frm_Login.loginuser.ArkadasListesi) {
-                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
-            }
-        } else {
-            btn_kabulet.setEnabled(true);
-            for (USER user : Frm_Login.loginuser.ArkadaslikIstekleri) {
-                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
-            }
-        }
+//        dtm2.setRowCount(0);
+//        if (rbtn_arkadaslar.isSelected()) {
+//               btn_kabulet.setEnabled(false);
+//            for (USER user : Frm_Login.loginuser.ArkadasListesi) {
+//                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+//            }
+//        } else {
+//            btn_kabulet.setEnabled(true);
+//            for (USER user : Frm_Login.loginuser.ArkadaslikIstekleri) {
+//                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
+//            }
+//        }
 
     }//GEN-LAST:event_rbtn_arkadaslarItemStateChanged
 
     private void btn_kabuletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_kabuletActionPerformed
         // TODO add your handling code here:
-         if (tbl_arkadaslistesi.getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
-            return;
-        }
-        String kullaniciadi = dtm2.getValueAt(tbl_arkadaslistesi.getSelectedRow(), 0).toString();
-        USER gelen=null;
-        for (USER user : Frm_Login.loginuser.ArkadaslikIstekleri) {
-            if (user.KullaniciAdi.compareTo(kullaniciadi) == 0) {
-                Frm_Login.loginuser.ArkadasListesi.add(user);
-                user.ArkadasListesi.add(Frm_Login.loginuser);
-               
-                gelen=user;
-                
-                break;
-            }
-        }
-        
-        if(gelen!=null)
-        {
-        Frm_Login.loginuser.ArkadaslikIstekleri.remove(gelen);
-        }
-        
-        
+//         if (tbl_arkadaslistesi.getSelectedRow() < 0) {
+//            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
+//            return;
+//        }
+//        String kullaniciadi = dtm2.getValueAt(tbl_arkadaslistesi.getSelectedRow(), 0).toString();
+//        USER gelen=null;
+//        for (USER user : Frm_Login.loginuser.ArkadaslikIstekleri) {
+//            if (user.KullaniciAdi.compareTo(kullaniciadi) == 0) {
+//                Frm_Login.loginuser.ArkadasListesi.add(user);
+//                user.ArkadasListesi.add(Frm_Login.loginuser);
+//               
+//                gelen=user;
+//                
+//                break;
+//            }
+//        }
+//        
+//        if(gelen!=null)
+//        {
+//        Frm_Login.loginuser.ArkadaslikIstekleri.remove(gelen);
+//        }
+
+
     }//GEN-LAST:event_btn_kabuletActionPerformed
 
     /**

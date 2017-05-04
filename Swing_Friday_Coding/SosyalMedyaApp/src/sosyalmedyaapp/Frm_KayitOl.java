@@ -117,31 +117,31 @@ public class Frm_KayitOl extends javax.swing.JFrame {
             yenikullanici.Sifre = String.valueOf(txtp_sifre.getPassword());
             yenikullanici.Cinsiyet = rdio_erkek.isSelected();
 
+            if (rdio_erkek.isSelected()) {
+                yenikullanici.Cinsiyet = true;
+            } else {
+                yenikullanici.Cinsiyet = false;
+            }
+            boolean kisivar = false;
+            for (USER kisi : USER.Kullanicilar) {
+                if (kisi.KullaniciAdi.compareTo(yenikullanici.KullaniciAdi) == 0) {
+                    kisivar = true;
+                    break;
+                }
+            }
 
-//        if (rdio_erkek.isSelected()) {
-//            yenikullanici.Cinsiyet = true;
-//        } else {
-//            yenikullanici.Cinsiyet = false;
-//        }
-//            boolean kisivar = false;
-//            for (USER kisi : USER.Kullanicilar) {
-//                if (kisi.KullaniciAdi.compareTo(yenikullanici.KullaniciAdi) == 0) {
-//                    kisivar = true;
-//                    break;
-//                }
-//            }
-//
-//            if (kisivar) {
-//                JOptionPane.showMessageDialog(rootPane, "Bu isimde bir kullanıcı bulunmaktadır!");
-//            } else {
-//
-//                USER.Kullanicilar.add(yenikullanici);
-//                JOptionPane.showMessageDialog(rootPane, "Kayıt Başarılı");
-//                Frm_Login log = new Frm_Login();
-//                log.setVisible(true);
-//                this.dispose();
-//            }
-      
+            if (kisivar) {
+                JOptionPane.showMessageDialog(rootPane, "Bu isimde bir kullanıcı bulunmaktadır!");
+            } else {
+
+                USER.Kullanicilar.add(yenikullanici);
+                JOptionPane.showMessageDialog(rootPane, "Kayıt Başarılı");
+                Frm_Login log = new Frm_Login();
+                log.setVisible(true);
+                this.dispose();
+            }
+        } catch (Exception ex) {
+        }
 
 
     }//GEN-LAST:event_btn_kaydetActionPerformed
