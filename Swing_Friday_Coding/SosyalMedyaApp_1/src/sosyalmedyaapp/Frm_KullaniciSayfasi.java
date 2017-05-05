@@ -67,6 +67,7 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
         rbtn_arkadaslar = new javax.swing.JRadioButton();
         rbtn_arkadaslilkistek = new javax.swing.JRadioButton();
         btn_kabulet = new javax.swing.JButton();
+        btn_sil = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -106,10 +107,10 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 469, 170));
 
         txt_kullaniciadi.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txt_kullaniciadiInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         txt_kullaniciadi.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -172,6 +173,11 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
 
         buttonGroup1.add(rbtn_arkadaslilkistek);
         rbtn_arkadaslilkistek.setText("Arkadaşlık İstekleri");
+        rbtn_arkadaslilkistek.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rbtn_arkadaslilkistekItemStateChanged(evt);
+            }
+        });
         jPanel2.add(rbtn_arkadaslilkistek, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, -1));
 
         btn_kabulet.setText("Kabul Et");
@@ -182,6 +188,14 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btn_kabulet, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, -1, -1));
+
+        btn_sil.setText("Sil");
+        btn_sil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_silActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_sil, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 40, -1, -1));
 
         jTabbedPane1.addTab("Arkadaş Listesi", jPanel2);
 
@@ -258,9 +272,7 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
         EntityManager em = emf.createEntityManager();
 
-        Query q = em.createQuery("SELECT u FROM USER_1 u WHERE u.adi LIKE '"+ad+"%'");
-
-
+        Query q = em.createQuery("SELECT u FROM USER_1 u WHERE u.adi LIKE '" + ad + "%'");
 
         List<USER_1> liste = q.getResultList();
 
@@ -281,32 +293,27 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
             return;
         }
         int id = (int) dtm1.getValueAt(tbl_kisiliste.getSelectedRow(), 0);
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
         EntityManager em = emf.createEntityManager();
 
         Query q = em.createQuery("SELECT u FROM USER_1 u WHERE u.id=:id");
         q.setParameter("id", id);
-        
 
+        USER_1 gelen = (USER_1) q.getSingleResult();
+        if (gelen == null) {
 
-        USER_1 gelen = (USER_1)q.getSingleResult();
-        if(gelen==null)
-        {
-        
             return;
-        }    
-        
+        }
+
         ARKADASLIK yeni = new ARKADASLIK();
         yeni.setId(3);
         yeni.setIdUserIstek(Frm_Login.loginuser.getId());
         yeni.setIdUserKabul(gelen.getId());
-       yeni.setKabulDurumu(false);
+        yeni.setKabulDurumu(false);
         em.getTransaction().begin();
         em.persist(yeni);
         em.getTransaction().commit();
-        
-
 
 
     }//GEN-LAST:event_btn_ekleActionPerformed
@@ -323,48 +330,112 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void rbtn_arkadaslarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtn_arkadaslarItemStateChanged
-        // TODO add your handling code here:
-//        dtm2.setRowCount(0);
-//        if (rbtn_arkadaslar.isSelected()) {
-//               btn_kabulet.setEnabled(false);
-//            for (USER user : Frm_Login.loginuser.ArkadasListesi) {
-//                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
-//            }
-//        } else {
-//            btn_kabulet.setEnabled(true);
-//            for (USER user : Frm_Login.loginuser.ArkadaslikIstekleri) {
-//                dtm2.addRow(new Object[]{user.KullaniciAdi, user.Adi, user.Soyadi});
-//            }
-//        }
+        if (!rbtn_arkadaslar.isSelected()) {
+            return;
+        }
+
+        btn_kabulet.setEnabled(false);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
+
+        Query q = em.createQuery("SELECT u FROM ARKADASLIK u WHERE u.idUserKabul=:id AND u.kabulDurumu=true");
+        q.setParameter("id", Frm_Login.loginuser.getId());
+
+        List<ARKADASLIK> gelenistekler = q.getResultList();
+        dtm2.setRowCount(0);
+        for (ARKADASLIK istek : gelenistekler) {
+
+            q = em.createQuery("SELECT u FROM USER_1 u WHERE u.id=:id");
+            q.setParameter("id", istek.getIdUserIstek());
+
+            USER_1 arkadas = (USER_1) q.getSingleResult();
+            if (arkadas != null) {
+                dtm2.addRow(new Object[]{arkadas.getId(), arkadas.getKullaniciAdi(), arkadas.getAdi(), arkadas.getSoyadi()});
+                return;
+            }
+        }
+
 
     }//GEN-LAST:event_rbtn_arkadaslarItemStateChanged
 
     private void btn_kabuletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_kabuletActionPerformed
-        // TODO add your handling code here:
-//         if (tbl_arkadaslistesi.getSelectedRow() < 0) {
-//            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
-//            return;
-//        }
-//        String kullaniciadi = dtm2.getValueAt(tbl_arkadaslistesi.getSelectedRow(), 0).toString();
-//        USER gelen=null;
-//        for (USER user : Frm_Login.loginuser.ArkadaslikIstekleri) {
-//            if (user.KullaniciAdi.compareTo(kullaniciadi) == 0) {
-//                Frm_Login.loginuser.ArkadasListesi.add(user);
-//                user.ArkadasListesi.add(Frm_Login.loginuser);
-//               
-//                gelen=user;
-//                
-//                break;
-//            }
-//        }
-//        
-//        if(gelen!=null)
-//        {
-//        Frm_Login.loginuser.ArkadaslikIstekleri.remove(gelen);
-//        }
+
+// TODO add your handling code here:
+        if (tbl_arkadaslistesi.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
+            return;
+        }
+
+        int id = (int) dtm2.getValueAt(tbl_arkadaslistesi.getSelectedRow(), 0);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
+
+        Query q = em.createQuery("UPDATE ARKADASLIK u SET u.kabulDurumu=true  WHERE u.idUserKabul=:kabulid AND U.idUserIstek=:istekid");
+        q.setParameter("istekid", id);
+        q.setParameter("kabulid", Frm_Login.loginuser.getId());
+
+        em.getTransaction().begin();
+        q.executeUpdate();
+        em.getTransaction().commit();
 
 
     }//GEN-LAST:event_btn_kabuletActionPerformed
+
+    private void rbtn_arkadaslilkistekItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtn_arkadaslilkistekItemStateChanged
+        // TODO add your handling code here:
+        if (!rbtn_arkadaslilkistek.isSelected()) {
+            return;
+        }
+
+        btn_kabulet.setEnabled(true);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
+
+        Query q = em.createQuery("SELECT u FROM ARKADASLIK u WHERE u.idUserKabul=:id AND u.kabulDurumu=false");
+        q.setParameter("id", Frm_Login.loginuser.getId());
+
+        List<ARKADASLIK> gelenistekler = q.getResultList();
+        dtm2.setRowCount(0);
+        for (ARKADASLIK istek : gelenistekler) {
+
+            q = em.createQuery("SELECT u FROM USER_1 u WHERE u.id=:id");
+            q.setParameter("id", istek.getIdUserIstek());
+
+            USER_1 arkadas = (USER_1) q.getSingleResult();
+            if (arkadas != null) {
+                dtm2.addRow(new Object[]{arkadas.getId(), arkadas.getKullaniciAdi(), arkadas.getAdi(), arkadas.getSoyadi()});
+                return;
+            }
+        }
+
+
+    }//GEN-LAST:event_rbtn_arkadaslilkistekItemStateChanged
+
+    private void btn_silActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_silActionPerformed
+        // TODO add your handling code here:
+        if (tbl_arkadaslistesi.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Bir kullanıcı Seçmelisiniz");
+            return;
+        }
+
+        int id = (int) dtm2.getValueAt(tbl_arkadaslistesi.getSelectedRow(), 0);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SosyalMedyaAppWithDatabasePU");
+        EntityManager em = emf.createEntityManager();
+
+        Query q = em.createQuery("DELETE FROM ARKADASLIK u WHERE u.idUserKabul=:kabulid AND U.idUserIstek=:istekid");
+        q.setParameter("istekid", id);
+        q.setParameter("kabulid", Frm_Login.loginuser.getId());
+
+        em.getTransaction().begin();
+        q.executeUpdate();
+        em.getTransaction().commit();
+        
+        
+    }//GEN-LAST:event_btn_silActionPerformed
 
     /**
      * @param args the command line arguments
@@ -405,6 +476,7 @@ public class Frm_KullaniciSayfasi extends javax.swing.JFrame {
     private javax.swing.JButton btn_bul;
     private javax.swing.JButton btn_ekle;
     private javax.swing.JButton btn_kabulet;
+    private javax.swing.JButton btn_sil;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
