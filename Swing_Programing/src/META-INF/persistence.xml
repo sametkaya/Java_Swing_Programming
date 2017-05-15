@@ -2,10 +2,11 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="BP2_LAB2PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>bp2_lab10.Hasta</class>
-    <class>bp2_lab10.Doktor</class>
+    <class>bp2_lab12.Musteri</class>
+    <class>bp2_lab12.Satis</class>
+    <class>bp2_lab12.Personel</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/HASTAHANEDB"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/DEPO"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="as"/>
